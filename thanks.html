@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Thank you — GameKey</title>
+    <meta name="robots" content="noindex">
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        /* Page-local styles for the thanks/recovery flow. */
+        .thanks-card {
+            max-width: 560px;
+            margin: 80px auto;
+            padding: 32px;
+            background: var(--surface);
+            border: 1px solid rgba(255,255,255,0.06);
+            border-radius: 18px;
+        }
+        .thanks-card h1 { font-size: 28px; margin: 0 0 12px; letter-spacing: -0.01em; }
+        .thanks-card p { color: var(--muted); }
+        .key-box {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background: var(--surface-2);
+            border: 1px solid rgba(255,255,255,0.08);
+            border-radius: 12px;
+            padding: 14px 16px;
+            font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+            margin: 16px 0 24px;
+            user-select: all;
+            word-break: break-all;
+        }
+        .key-actions { display: flex; gap: 8px; }
+        .pill-btn {
+            background: rgba(124,92,255,0.18);
+            border: 1px solid rgba(124,92,255,0.4);
+            color: #cdbcff;
+            padding: 6px 12px;
+            border-radius: 8px;
+            font-size: 12px;
+            cursor: pointer;
+        }
+        .pill-btn:hover { background: rgba(124,92,255,0.28); }
+        .recovery {
+            margin-top: 32px;
+            padding-top: 24px;
+            border-top: 1px solid rgba(255,255,255,0.08);
+        }
+        .recovery input {
+            width: 100%;
+            padding: 12px 14px;
+            border-radius: 10px;
+            background: var(--surface-2);
+            border: 1px solid rgba(255,255,255,0.08);
+            color: var(--text);
+            font-size: 14px;
+            margin: 8px 0 12px;
+        }
+        .status { font-size: 13px; margin-top: 8px; }
+        .status.ok { color: #6cd49b; }
+        .status.err { color: #ff7676; }
+        .hidden { display: none; }
+    </style>
+</head>
+<body>
+    <header class="nav">
+        <div class="container nav-inner">
+            <a href="index.html" class="brand">
+                <span class="brand-mark"></span>
+                <span class="brand-text">GameKey</span>
+            </a>
+            <nav class="nav-links">
+                <a href="index.html#features">Features</a>
+                <a href="index.html#install">Install</a>
+                <a href="index.html#faq">FAQ</a>
+            </nav>
+        </div>
+    </header>
+
+    <main>
+        <section class="thanks-card" id="thanks-purchase">
+            <span class="eyebrow">Order confirmed</span>
+            <h1>Thanks — your license is ready.</h1>
+            <p>Your purchase email contains the same key. Save it somewhere safe; you'll paste it into GameKey on first launch.</p>
+
+            <div class="key-box">
+                <span id="license-key">Loading your key…</span>
+                <div class="key-actions">
+                    <button class="pill-btn" id="copy-key">Copy</button>
+                </div>
+            </div>
+
+            <a class="btn btn-primary btn-block" id="download-link" href="#" download>
+                <span class="btn-icon">⬇</span>
+                Download GameKey.dmg
+                <span class="btn-sub">macOS 14+ · Apple Silicon</span>
+            </a>
+
+            <p style="margin-top: 18px; font-size: 13px;">
+                Need a hand? Email <a href="mailto:support@gamekey.example">support@gamekey.example</a> with your order ID.
+            </p>
+        </section>
+
+        <section class="thanks-card recovery" id="recovery-card">
+            <h2 style="font-size: 20px; margin: 0 0 8px;">Recover an existing license</h2>
+            <p>Enter the email you bought with. We'll re-send your key.</p>
+            <input type="email" id="recovery-email" placeholder="you@example.com" autocomplete="email">
+            <button class="btn btn-primary btn-block" id="recovery-submit">Email me my key</button>
+            <p class="status hidden" id="recovery-status"></p>
+        </section>
+    </main>
+
+    <footer>
+        <div class="container footer-inner">
+            <div>
+                <span class="brand-mark small"></span>
+                <span>GameKey · All rights reserved</span>
+            </div>
+            <nav class="footer-links">
+                <a href="LICENSE">License</a>
+                <a href="index.html">Home</a>
+            </nav>
+        </div>
+    </footer>
+
+    <script>
+        // Stripe will redirect users here with ?session_id=cs_xxx after a successful Checkout.
+        // This page calls our server endpoint to:
+        //   1. verify the session is real and paid
+        //   2. mint (or fetch) a license key bound to that session
+        //   3. return a single-use signed download URL for the DMG
+        // The endpoint is a small Cloudflare Worker (or any backend) that talks to the Stripe API
+        // with your secret key. Never embed the secret key here.
+        const params = new URLSearchParams(location.search);
+        const sessionId = params.get('session_id');
+
+        const API_BASE = 'https://api.gamekey.example'; // replace with your deployed worker URL.
+
+        const keyEl = document.getElementById('license-key');
+        const dlEl = document.getElementById('download-link');
+        const copyBtn = document.getElementById('copy-key');
+
+        async function loadOrder() {
+            if (!sessionId) {
+                keyEl.textContent = 'No order found in this URL.';
+                dlEl.classList.add('hidden');
+                return;
+            }
+            try {
+                const res = await fetch(`${API_BASE}/orders/${encodeURIComponent(sessionId)}`);
+                if (!res.ok) throw new Error('order lookup failed');
+                const data = await res.json();
+                keyEl.textContent = data.licenseKey;
+                dlEl.href = data.downloadUrl;
+            } catch (e) {
+                keyEl.textContent = 'We could not load your order. Email support@gamekey.example.';
+                dlEl.classList.add('hidden');
+            }
+        }
+
+        copyBtn.addEventListener('click', async () => {
+            try {
+                await navigator.clipboard.writeText(keyEl.textContent);
+                copyBtn.textContent = 'Copied';
+                setTimeout(() => { copyBtn.textContent = 'Copy'; }, 1500);
+            } catch (_) {}
+        });
+
+        document.getElementById('recovery-submit').addEventListener('click', async () => {
+            const email = document.getElementById('recovery-email').value.trim();
+            const status = document.getElementById('recovery-status');
+            status.classList.remove('hidden', 'ok', 'err');
+            if (!email) { status.classList.add('err'); status.textContent = 'Please enter an email.'; return; }
+            try {
+                const res = await fetch(`${API_BASE}/recover`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ email })
+                });
+                if (!res.ok) throw new Error();
+                status.classList.add('ok');
+                status.textContent = 'If we have a record of that email, your key is on its way.';
+            } catch (_) {
+                status.classList.add('err');
+                status.textContent = 'Something went wrong. Try again or email support.';
+            }
+        });
+
+        loadOrder();
+    </script>
+</body>
+</html>

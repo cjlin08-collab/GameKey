@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Account — GameKey</title>
+    <meta name="robots" content="noindex">
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        .account { max-width: 640px; margin: 80px auto; padding: 0 24px; }
+        .account-card {
+            background: var(--surface);
+            border: 1px solid rgba(255,255,255,0.06);
+            border-radius: 18px;
+            padding: 28px;
+            margin-bottom: 16px;
+        }
+        .account-card h2 { font-size: 20px; margin: 0 0 14px; }
+        .account-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 10px 0;
+            border-bottom: 1px solid rgba(255,255,255,0.05);
+            font-size: 14px;
+        }
+        .account-row:last-child { border-bottom: none; }
+        .account-row .label { color: var(--muted); }
+        .account-row .val { font-family: ui-monospace, Menlo, monospace; user-select: all; word-break: break-all; }
+        .empty { color: var(--muted); font-size: 14px; padding: 12px 0; }
+        .account-actions { display: flex; gap: 10px; margin-top: 18px; }
+    </style>
+</head>
+<body>
+    <header class="nav">
+        <div class="container nav-inner">
+            <a href="index.html" class="brand">
+                <span class="brand-mark"></span>
+                <span class="brand-text">GameKey</span>
+            </a>
+            <nav class="nav-links">
+                <a href="index.html#features">Features</a>
+                <a href="index.html#pricing">Pricing</a>
+                <a href="#" id="signout-link">Sign out</a>
+            </nav>
+        </div>
+    </header>
+
+    <main class="account" id="account-loading">
+        <div class="account-card">
+            <p>Loading your account…</p>
+        </div>
+    </main>
+
+    <main class="account" id="account-signed-in" hidden>
+        <h1 style="margin-bottom: 8px;">Your account</h1>
+        <p style="color: var(--muted); margin: 0 0 24px;" id="account-email">—</p>
+
+        <div class="account-card" id="license-card">
+            <h2>License</h2>
+            <div id="license-empty" class="empty">
+                You haven't bought GameKey yet. <a href="index.html#pricing">See pricing →</a>
+            </div>
+            <div id="license-present" hidden>
+                <div class="account-row"><span class="label">Key</span><span class="val" id="license-key">—</span></div>
+                <div class="account-row"><span class="label">Source</span><span class="val" id="license-source">—</span></div>
+                <div class="account-row"><span class="label">Activated on</span><span class="val" id="license-activations">—</span></div>
+                <div class="account-row"><span class="label">Status</span><span class="val" id="license-status">—</span></div>
+                <div class="account-actions">
+                    <a class="btn btn-primary" id="download-link" href="#" download>Download GameKey.dmg</a>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <main class="account" id="account-signed-out" hidden>
+        <div class="account-card">
+            <h2>You're signed out</h2>
+            <p>Sign in from the home page to see your license.</p>
+            <a class="btn btn-primary" href="index.html">Back to home</a>
+        </div>
+    </main>
+
+    <script>
+        const API_BASE = 'https://api.gamekey.example'; // replace with your deployed worker URL
+
+        // Sign-in tokens arrive as #token=... after the worker redirects from /auth/verify.
+        // We capture and store, then strip from the URL so refreshes don't re-process the token.
+        if (location.hash.startsWith('#token=')) {
+            const token = location.hash.slice('#token='.length);
+            localStorage.setItem('gamekey.session', token);
+            history.replaceState(null, '', location.pathname);
+        }
+
+        const sessionToken = localStorage.getItem('gamekey.session');
+
+        async function load() {
+            const loading = document.getElementById('account-loading');
+            const signedIn = document.getElementById('account-signed-in');
+            const signedOut = document.getElementById('account-signed-out');
+
+            if (!sessionToken) {
+                loading.hidden = true;
+                signedOut.hidden = false;
+                return;
+            }
+            try {
+                const res = await fetch(`${API_BASE}/auth/me`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ sessionToken })
+                });
+                const data = await res.json();
+                if (!data.ok) throw new Error('not authenticated');
+
+                document.getElementById('account-email').textContent = data.email;
+                if (data.license) {
+                    document.getElementById('license-empty').hidden = true;
+                    document.getElementById('license-present').hidden = false;
+                    document.getElementById('license-key').textContent = data.license.key;
+                    document.getElementById('license-source').textContent = data.license.source || 'unknown';
+                    document.getElementById('license-activations').textContent =
+                        `${data.license.activations} of ${data.license.activationsMax}`;
+                    document.getElementById('license-status').textContent = data.license.status;
+                }
+                loading.hidden = true;
+                signedIn.hidden = false;
+            } catch (e) {
+                localStorage.removeItem('gamekey.session');
+                loading.hidden = true;
+                signedOut.hidden = false;
+            }
+        }
+
+        document.getElementById('signout-link').addEventListener('click', async (e) => {
+            e.preventDefault();
+            const token = localStorage.getItem('gamekey.session');
+            localStorage.removeItem('gamekey.session');
+            if (token) {
+                try { await fetch(`${API_BASE}/auth/signout`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ sessionToken: token })
+                }); } catch (_) {}
+            }
+            location.href = 'index.html';
+        });
+
+        load();
+    </script>
+</body>
+</html>

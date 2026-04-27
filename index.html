@@ -1,0 +1,410 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GameKey — All your PC launchers, on macOS</title>
+    <meta name="description" content="GameKey installs Steam, Epic Games, GOG Galaxy, Ubisoft Connect, and EA App into Apple's Game Porting Toolkit so you can play your Windows library on your Mac.">
+    <meta property="og:title" content="GameKey">
+    <meta property="og:description" content="All five major PC launchers, one click each, on macOS.">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <header class="nav">
+        <div class="container nav-inner">
+            <a href="#" class="brand">
+                <span class="brand-mark"></span>
+                <span class="brand-text">GameKey</span>
+            </a>
+            <nav class="nav-links">
+                <a href="#features">Features</a>
+                <a href="#pricing">Pricing</a>
+                <a href="#requirements">Requirements</a>
+                <a href="#install">Install</a>
+                <a href="#faq">FAQ</a>
+                <a href="#" id="nav-signin">Sign in</a>
+                <a class="nav-buy" href="#pricing">Buy · $60</a>
+            </nav>
+        </div>
+    </header>
+
+    <main>
+        <section class="hero">
+            <div class="container hero-inner">
+                <span class="eyebrow">v0.1 · macOS 14+ · Apple Silicon</span>
+                <h1>All your PC launchers,<br>one click each, on your Mac.</h1>
+                <p class="lede">
+                    GameKey installs Steam, Epic Games, GOG Galaxy, Ubisoft Connect, and EA App into Apple's
+                    Game Porting Toolkit. You sign in inside each launcher's own window — your passwords never
+                    touch GameKey.
+                </p>
+                <div class="cta-row">
+                    <a class="btn btn-primary" href="#pricing">
+                        <span class="btn-icon">⬇</span>
+                        Buy GameKey
+                        <span class="btn-sub">$60 · One-time</span>
+                    </a>
+                    <a class="btn btn-ghost" href="#features">See what's included</a>
+                </div>
+                <p class="hero-fineprint">
+                    One-time purchase · 14-day refund · macOS 14+ · Apple Silicon
+                </p>
+            </div>
+            <div class="hero-art" aria-hidden="true">
+                <div class="bottle bottle-steam"><span>Steam</span></div>
+                <div class="bottle bottle-epic"><span>Epic</span></div>
+                <div class="bottle bottle-gog"><span>GOG</span></div>
+                <div class="bottle bottle-ubi"><span>Ubisoft</span></div>
+                <div class="bottle bottle-ea"><span>EA</span></div>
+            </div>
+        </section>
+
+        <section id="features" class="features">
+            <div class="container">
+                <h2>What GameKey does</h2>
+                <div class="feature-grid">
+                    <article class="feature">
+                        <div class="feature-icon">⚡</div>
+                        <h3>One click per launcher</h3>
+                        <p>Pick a launcher; GameKey downloads the official installer from the vendor's CDN and runs it inside an isolated bottle.</p>
+                    </article>
+                    <article class="feature">
+                        <div class="feature-icon">🔒</div>
+                        <h3>Your passwords stay yours</h3>
+                        <p>You sign in inside the real launcher window with 2FA exactly like on Windows. GameKey never sees credentials.</p>
+                    </article>
+                    <article class="feature">
+                        <div class="feature-icon">🍾</div>
+                        <h3>Isolated bottles</h3>
+                        <p>Each launcher gets its own Wine prefix, so a botched Ubisoft Connect can't poison your Steam install.</p>
+                    </article>
+                    <article class="feature">
+                        <div class="feature-icon">🚀</div>
+                        <h3>GPTK + D3DMetal</h3>
+                        <p>Built on Apple's Game Porting Toolkit so DirectX 11 and 12 titles run through Metal at native speeds.</p>
+                    </article>
+                    <article class="feature">
+                        <div class="feature-icon">🧹</div>
+                        <h3>Clean uninstall</h3>
+                        <p>Delete a bottle and the launcher and everything it dropped on disk goes with it. No leftover registry hairballs in the system.</p>
+                    </article>
+                    <article class="feature">
+                        <div class="feature-icon">📂</div>
+                        <h3>Open by design</h3>
+                        <p>MIT licensed Swift source. No telemetry. No login wall. The CDN URLs we use are visible in the source.</p>
+                    </article>
+                </div>
+            </div>
+        </section>
+
+        <section id="pricing" class="pricing">
+            <div class="container">
+                <h2>Pricing</h2>
+                <p class="section-lede">Pick a bundle, or redeem a code below.</p>
+                <div class="pricing-grid two-up">
+                    <article class="plan plan-featured">
+                        <header class="plan-header">
+                            <span class="plan-tag">Most popular</span>
+                            <h3 class="plan-name">GameKey</h3>
+                            <div class="plan-price">
+                                <span class="plan-amount">$60</span>
+                                <span class="plan-cadence">one-time</span>
+                            </div>
+                        </header>
+                        <ul class="plan-features">
+                            <li>All five launchers — Steam, Epic, GOG, Ubisoft, EA</li>
+                            <li>Auto-install with isolated Wine bottles</li>
+                            <li>Notarized signed build — no Gatekeeper warnings</li>
+                            <li>Free updates for the v1.x lifetime</li>
+                            <li>Email support, 24-hour response</li>
+                            <li>Use on every Mac you personally own</li>
+                            <li>14-day no-questions refund</li>
+                        </ul>
+                        <a class="btn btn-primary btn-block" href="https://buy.stripe.com/REPLACE_WITH_YOUR_PAYMENT_LINK">
+                            <span class="btn-icon">⬇</span>
+                            Buy and download
+                            <span class="btn-sub">$60 · Stripe</span>
+                        </a>
+                        <p class="plan-fineprint">
+                            Already purchased?
+                            <a href="thanks.html">Re-download or recover your key →</a>
+                        </p>
+                    </article>
+
+                    <article class="plan plan-rockstar">
+                        <header class="plan-header">
+                            <span class="plan-tag plan-tag-rockstar">Rockstar bundle</span>
+                            <h3 class="plan-name">GameKey + Rockstar</h3>
+                            <div class="plan-price">
+                                <span class="plan-amount">$40</span>
+                                <span class="plan-cadence">one-time</span>
+                            </div>
+                        </header>
+                        <ul class="plan-features">
+                            <li>Everything in the main GameKey bundle</li>
+                            <li>Auto-install for the Rockstar Games Launcher</li>
+                            <li>GTA, Red Dead, and other Rockstar titles ready to download via Rockstar's official store</li>
+                            <li class="feature-pending">GTA 5 game code — pending fulfillment setup, see below</li>
+                        </ul>
+                        <a class="btn btn-secondary btn-block" href="https://buy.stripe.com/REPLACE_WITH_ROCKSTAR_PAYMENT_LINK">
+                            <span class="btn-icon">⬇</span>
+                            Buy Rockstar bundle
+                            <span class="btn-sub">$40 · Stripe</span>
+                        </a>
+                        <p class="plan-fineprint">
+                            Note: until we wire up a code-source for GTA 5, this bundle ships only the Rockstar launcher install. Buy at $40 only if you're OK with that.
+                        </p>
+                    </article>
+                </div>
+
+                <div class="redeem-block" id="redeem">
+                    <h3>Have a code?</h3>
+                    <p class="redeem-lede">Enter a promo or beta code to claim a free GameKey license.</p>
+                    <form class="redeem-form" id="redeem-form" onsubmit="return false;">
+                        <input type="text" id="redeem-code" placeholder="Promo code" autocomplete="off" required>
+                        <input type="email" id="redeem-email" placeholder="Email for your key" autocomplete="email" required>
+                        <button class="btn btn-primary" id="redeem-submit" type="submit">Redeem</button>
+                    </form>
+                    <p class="redeem-status" id="redeem-status" hidden></p>
+                </div>
+
+                <div class="plan-sidecar plan-sidecar-row">
+                    <div>
+                        <h4>What you actually get</h4>
+                        <p>A notarized, fully-tested build of GameKey, install recipes that keep working as launchers update their CDNs, and email support when something breaks.</p>
+                    </div>
+                    <div>
+                        <h4>What this isn't</h4>
+                        <p>It's not a subscription. It's not Game Pass. It does not include the games or the launcher subscriptions — those still cost what they cost on each platform.</p>
+                    </div>
+                    <div>
+                        <h4>Refund policy</h4>
+                        <p>If GameKey doesn't work for you within 14 days, email <a href="mailto:support@gamekey.example">support@gamekey.example</a> and we'll refund and revoke the key.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <script>
+            // Redeem form handler. Posts to the worker /redeem endpoint and shows the user
+            // their license key inline. Same API_BASE pattern as thanks.html.
+            (function () {
+                const API_BASE = 'https://api.gamekey.example'; // replace with your deployed worker URL
+                const form = document.getElementById('redeem-form');
+                const status = document.getElementById('redeem-status');
+                const btn = document.getElementById('redeem-submit');
+
+                form.addEventListener('submit', async () => {
+                    const code = document.getElementById('redeem-code').value.trim();
+                    const email = document.getElementById('redeem-email').value.trim();
+                    if (!code || !email) return;
+
+                    btn.disabled = true; btn.textContent = 'Redeeming…';
+                    status.hidden = true;
+                    try {
+                        const res = await fetch(`${API_BASE}/redeem`, {
+                            method: 'POST',
+                            headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify({ code, email })
+                        });
+                        const data = await res.json();
+                        if (data.ok && data.key) {
+                            status.innerHTML = `Your key: <code>${data.key}</code> — also emailed to ${email}.`;
+                            status.className = 'redeem-status ok';
+                        } else {
+                            status.textContent = data.reason || 'That code didn\'t work.';
+                            status.className = 'redeem-status err';
+                        }
+                    } catch (e) {
+                        status.textContent = 'Couldn\'t reach the server. Try again in a moment.';
+                        status.className = 'redeem-status err';
+                    }
+                    status.hidden = false;
+                    btn.disabled = false; btn.textContent = 'Redeem';
+                });
+            })();
+        </script>
+
+        <section id="requirements" class="requirements">
+            <div class="container">
+                <h2>Requirements</h2>
+                <ul class="req-list">
+                    <li><strong>macOS 14 Sonoma or later.</strong> macOS 15 Sequoia recommended for D3DMetal stability.</li>
+                    <li><strong>Apple Silicon (M1 or later).</strong> Intel Macs run some launchers but not D3DMetal.</li>
+                    <li><strong>Apple Game Porting Toolkit installed.</strong> GameKey prompts you the first time it doesn't find it.</li>
+                    <li><strong>~20 GB free disk space</strong> for prefixes plus whatever the launchers themselves install.</li>
+                </ul>
+            </div>
+        </section>
+
+        <section id="install" class="install">
+            <div class="container">
+                <h2>Installing</h2>
+                <ol class="steps">
+                    <li>
+                        <h3>1. Buy and download</h3>
+                        <p>Complete checkout. Stripe redirects you to a thanks page with your DMG download and a license key. The same email contains both.</p>
+                    </li>
+                    <li>
+                        <h3>2. Move GameKey.app to Applications</h3>
+                        <p>Open the DMG and drag the icon onto the Applications folder.</p>
+                    </li>
+                    <li>
+                        <h3>3. Open GameKey and paste your license key</h3>
+                        <p>The first time you launch, GameKey asks for the key from your purchase email. Paste it once; it's saved to your Keychain.</p>
+                    </li>
+                    <li>
+                        <h3>4. Install Apple's Game Porting Toolkit</h3>
+                        <p>If GameKey doesn't detect GPTK, it'll show a banner with a link to Apple's developer page. GPTK is a free download from Apple.</p>
+                    </li>
+                    <li>
+                        <h3>5. Pick a launcher and click Install</h3>
+                        <p>That's it. The launcher's own installer runs; sign in inside its window when it pops up.</p>
+                    </li>
+                </ol>
+            </div>
+        </section>
+
+        <section id="faq" class="faq">
+            <div class="container">
+                <h2>FAQ</h2>
+                <details>
+                    <summary>Does GameKey store my Steam/Epic/etc. password?</summary>
+                    <p>No. You sign in inside the launcher's own window, the same way you would on Windows. GameKey has no login form and no credential store.</p>
+                </details>
+                <details>
+                    <summary>Is the DMG signed and notarized?</summary>
+                    <p>Yes. The paid build is signed with our Apple Developer ID and notarized by Apple, so there's no Gatekeeper warning on first open.</p>
+                </details>
+                <details>
+                    <summary>I lost my license key — can I get it back?</summary>
+                    <p>Open <a href="thanks.html">the recovery page</a> and enter the email you bought with. We'll re-send your key. If your account is in good standing the same key works on every Mac you personally own.</p>
+                </details>
+                <details>
+                    <summary>Why does it cost $60 when Whiskey is free?</summary>
+                    <p>Whiskey is great and you should consider it. GameKey charges for: a notarized one-click build, automated install recipes for all five launchers (kept up to date as the vendors change CDNs), per-launcher prefix tweaks so EA App and Ubisoft Connect don't fight you, and email support when a launcher breaks. If none of that is worth $60 to you, Whiskey is the right tool.</p>
+                </details>
+                <details>
+                    <summary>Will my games run?</summary>
+                    <p>Most DirectX 11/12 titles work through GPTK. Anti-cheat heavy games (Valorant, Fortnite chapter-restricted modes, Call of Duty multiplayer) do not — that's a launcher and anti-cheat issue, not a GameKey issue.</p>
+                </details>
+                <details>
+                    <summary>Is this affiliated with Whiskey or Heroic?</summary>
+                    <p>No. GameKey was inspired by both projects but shares no code with either. See <a href="CREDITS.md">CREDITS.md</a> for full attributions.</p>
+                </details>
+                <details>
+                    <summary>Is this allowed by Steam/Epic/etc?</summary>
+                    <p>Running the official launcher under Wine is something each platform tolerates to varying degrees, but none ban the practice. GameKey deliberately doesn't automate logins or scrape platform APIs, which is where you get into ToS trouble.</p>
+                </details>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="container footer-inner">
+            <div>
+                <span class="brand-mark small"></span>
+                <span>GameKey · MIT licensed</span>
+            </div>
+            <nav class="footer-links">
+                <a href="LICENSE">License</a>
+                <a href="CREDITS.md">Credits</a>
+                <a href="https://github.com/">Source</a>
+            </nav>
+        </div>
+    </footer>
+
+    <!-- Sign-in modal: shown when the user clicks Sign in. Magic-link auth, no password. -->
+    <div class="auth-overlay" id="auth-overlay" hidden>
+        <div class="auth-modal">
+            <button class="auth-close" id="auth-close" aria-label="Close">×</button>
+            <h2 id="auth-title">Sign in to GameKey</h2>
+            <p id="auth-lede">We'll email you a one-time link. No passwords.</p>
+            <input type="email" id="auth-email" placeholder="you@example.com" autocomplete="email">
+            <button class="btn btn-primary btn-block" id="auth-submit">Email me a sign-in link</button>
+            <p class="auth-status" id="auth-status" hidden></p>
+        </div>
+    </div>
+
+    <script>
+        // Account / auth glue. Two roles:
+        //  1. The Sign in nav link opens the magic-link modal.
+        //  2. If the user already has a session token (in localStorage), we replace "Sign in" with
+        //     "Account" and prefill their email anywhere it's needed (Stripe link, redeem form).
+        (function () {
+            const API_BASE = 'https://api.gamekey.example'; // replace with your deployed worker URL
+            const navSignin = document.getElementById('nav-signin');
+            const overlay = document.getElementById('auth-overlay');
+            const close = document.getElementById('auth-close');
+            const submit = document.getElementById('auth-submit');
+            const emailInput = document.getElementById('auth-email');
+            const status = document.getElementById('auth-status');
+            const title = document.getElementById('auth-title');
+            const lede = document.getElementById('auth-lede');
+
+            const sessionToken = localStorage.getItem('gamekey.session');
+
+            function showOverlay() { overlay.hidden = false; emailInput.focus(); }
+            function hideOverlay() { overlay.hidden = true; status.hidden = true; }
+
+            navSignin.addEventListener('click', (e) => {
+                e.preventDefault();
+                if (sessionToken) {
+                    location.href = 'account.html';
+                } else {
+                    showOverlay();
+                }
+            });
+            close.addEventListener('click', hideOverlay);
+            overlay.addEventListener('click', (e) => { if (e.target === overlay) hideOverlay(); });
+
+            submit.addEventListener('click', async () => {
+                const email = emailInput.value.trim();
+                if (!email) return;
+                submit.disabled = true; submit.textContent = 'Sending…';
+                try {
+                    await fetch(`${API_BASE}/auth/request`, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ email })
+                    });
+                    title.textContent = 'Check your email';
+                    lede.textContent = `We sent a sign-in link to ${email}. The link expires in 15 minutes.`;
+                    emailInput.style.display = 'none';
+                    submit.style.display = 'none';
+                } catch (e) {
+                    status.hidden = false;
+                    status.className = 'auth-status err';
+                    status.textContent = 'Couldn\'t send. Try again in a moment.';
+                    submit.disabled = false; submit.textContent = 'Email me a sign-in link';
+                }
+            });
+
+            // If signed in, show "Account" in the nav and prefill any email input.
+            if (sessionToken) {
+                navSignin.textContent = 'Account';
+                fetch(`${API_BASE}/auth/me`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ sessionToken })
+                }).then(r => r.json()).then(data => {
+                    if (data.ok && data.email) {
+                        // Prefill the redeem form's email field, and append email to the Stripe
+                        // Payment Links so the user doesn't type it again.
+                        const redeemEmail = document.getElementById('redeem-email');
+                        if (redeemEmail) redeemEmail.value = data.email;
+                        document.querySelectorAll('a[href*="buy.stripe.com"]').forEach(a => {
+                            const url = new URL(a.href);
+                            url.searchParams.set('prefilled_email', data.email);
+                            a.href = url.toString();
+                        });
+                    } else {
+                        // Stale token. Clean it up.
+                        localStorage.removeItem('gamekey.session');
+                    }
+                }).catch(() => {});
+            }
+        })();
+    </script>
+</body>
+</html>
