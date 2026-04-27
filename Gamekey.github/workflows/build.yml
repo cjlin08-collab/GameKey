@@ -1,0 +1,87 @@
+# Builds GameKey.app on GitHub's free macOS runners and uploads the DMG as a downloadable
+# artifact. You never need to open Terminal or Xcode locally — push code, wait ~3 min, then
+# download the DMG from the Actions tab.
+#
+# Triggers:
+#   - Every push (so you always have a fresh build matching your latest code).
+#   - Manual run from the Actions tab (the "Run workflow" button).
+#   - Pushing a tag like `v0.1.0` also publishes a GitHub Release with the DMG attached.
+
+name: Build GameKey
+
+on:
+  push:
+    branches: ["**"]
+    tags: ["v*"]
+  workflow_dispatch: {}        # the "Run workflow" button in the Actions UI
+
+jobs:
+  build:
+    name: Build macOS app
+    runs-on: macos-14            # Apple Silicon runner. Free for public repos.
+    timeout-minutes: 30
+
+    steps:
+      - name: Check out source
+        uses: actions/checkout@v4
+
+      - name: Install build tools
+        run: |
+          # xcodegen converts project.yml -> GameKey.xcodeproj
+          # create-dmg packages the .app into a nice .dmg
+          brew install xcodegen create-dmg
+
+      - name: Generate Xcode project
+        run: xcodegen generate
+
+      - name: Build Release
+        run: |
+          xcodebuild \
+            -project GameKey.xcodeproj \
+            -scheme GameKey \
+            -configuration Release \
+            -derivedDataPath build \
+            CODE_SIGN_IDENTITY="-" \
+            CODE_SIGNING_REQUIRED=NO \
+            CODE_SIGNING_ALLOWED=NO \
+            build
+
+      - name: Package DMG
+        run: |
+          mkdir -p dist
+          APP="build/Build/Products/Release/GameKey.app"
+          if [ ! -d "$APP" ]; then
+            echo "Build did not produce GameKey.app" >&2
+            exit 1
+          fi
+          # Ad-hoc sign so the bundle is at least valid (though not Gatekeeper-trusted).
+          codesign --force --deep --sign - "$APP"
+          cp -R "$APP" dist/GameKey.app
+          # Try create-dmg; fall back to hdiutil if it's grumpy.
+          if ! create-dmg \
+                --volname "GameKey" \
+                --window-size 540 380 \
+                --icon "GameKey.app" 140 190 \
+                --app-drop-link 400 190 \
+                --no-internet-enable \
+                dist/GameKey.dmg dist/GameKey.app; then
+            echo "create-dmg failed; falling back to hdiutil"
+            hdiutil create -volname "GameKey" -srcfolder dist/GameKey.app -ov -format UDZO dist/GameKey.dmg
+          fi
+
+      - name: Upload DMG as workflow artifact
+        # Downloadable from the Actions run page. Keeps for 90 days by default.
+        uses: actions/upload-artifact@v4
+        with:
+          name: GameKey-dmg
+          path: dist/GameKey.dmg
+          if-no-files-found: error
+
+      - name: Publish GitHub Release (only on tag push)
+        if: startsWith(github.ref, 'refs/tags/v')
+        uses: softprops/action-gh-release@v2
+        with:
+          files: dist/GameKey.dmg
+          generate_release_notes: true
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
